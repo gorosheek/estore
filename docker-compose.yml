@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  php-server:
+    build: ./PHP
+    container_name: php-server
+    volumes:
+      - ./PHP/src:/var/www/php
+  nginx:
+    image: nginx:latest
+    container_name: php-nginx
+    ports:
+      - "3000:80"
+      - "3001:443"
+    volumes:
+      - ./Nginx/core:/etc/nginx/conf.d
+      - ./Nginx/logs:/var/log/nginx
+      - ./PHP/src:/var/www/php
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    
